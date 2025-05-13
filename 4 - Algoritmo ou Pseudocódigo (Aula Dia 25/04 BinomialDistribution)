@@ -1,0 +1,101 @@
+CONSTANTE LANÇAMENTOS_DE_MOEDA ← 100
+CONSTANTE LINHAS_NO_DIAGRAMA ← 30
+
+CLASSE BinomialDistribution:
+    VARIÁVEIS:
+        num: inteiro
+        prob: real
+        result: inteiro
+
+    CLASSE Coin:
+        VARIÁVEL head é booleano (refere-se a um tipo de dado lógico que pode ter apenas um de dois valores: verdadeiro ou falso)
+
+        MÉTODO toss() → booleano:
+            random ← número aleatório entre 0 e 1
+            SE prob ≥ random ENTÃO
+                head ← verdadeiro
+            SENÃO
+                head ← falso
+            RETORNA head
+        FIM MÉTODO
+    FIM CLASSE
+
+    CONSTRUTOR BinomialDistribution(n: inteiro, p: real):
+        num ← n
+        prob ← p
+        result ← 0
+    FIM CONSTRUTOR
+
+    MÉTODO experiment() → inteiro:
+        coin ← novo Coin
+        result ← 0
+        PARA i de 0 até num - 1 FAÇA
+            coin.head ← falso
+            coin.toss()
+            SE coin.head = verdadeiro ENTÃO
+                result ← result + 1
+            FIM SE
+        FIM PARA
+        RETORNA result
+    FIM MÉTODO
+FIM CLASSE
+
+CLASSE DataList:
+    VARIÁVEL dados: lista de inteiros
+
+    CONSTRUTOR DataList():
+        dados ← lista vazia
+    FIM CONSTRUTOR
+
+    MÉTODO insert(valor: inteiro):
+        adicionar valor em dados
+    FIM MÉTODO
+
+    MÉTODO add(outro: DataList) → DataList:
+        nova ← nova DataList
+        PARA i de 0 até tamanho de dados - 1 FAÇA
+            nova.insert( dados[i] + outro.dados[i] )
+        FIM PARA
+        RETORNA nova
+    FIM MÉTODO
+
+    MÉTODO toString() → texto:
+        RETORNA representação textual de dados
+    FIM MÉTODO
+
+    MÉTODO printDiagram(linhas: inteiro, colunas: inteiro):
+        // Exibe um gráfico textual com 'linhas' de altura e 'colunas' de largura
+        // Pode usar escalonamento proporcional com base nos valores da lista
+    FIM MÉTODO
+FIM CLASSE
+
+FUNÇÃO principal(args):
+    SE tamanho de args < 3 ENTÃO
+        ENCERRA
+    FIM SE
+
+    p ← converter args[0] para real
+    p2 ← converter args[1] para real
+    m ← converter args[2] para inteiro
+
+    dist ← novo BinomialDistribution(COIN_TOSSES, p)
+    data ← nova DataList
+
+    PARA i de 0 até m - 1 FAÇA
+        resultado ← dist.experiment()
+        data.insert(resultado)
+    FIM PARA
+
+    dist2 ← novo BinomialDistribution(COIN_TOSSES, p2)
+    data2 ← nova DataList
+
+    PARA i de 0 até m - 1 FAÇA
+        resultado ← dist2.experiment()
+        data2.insert(resultado)
+    FIM PARA
+
+    data ← data.add(data2)
+
+    imprimir data.toString()
+    data.printDiagram(LINES_IN_DIAGRAM, COIN_TOSSES)
+FIM FUNÇÃO
